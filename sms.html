@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Send SMS</title>
+</head>
+<style>
+    /* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom, #6a11cb, #2575fc);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Container for the form */
+form {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  padding: 20px 30px;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Form Heading */
+h1 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #f7f7f7;
+}
+
+/* Labels */
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #ddd;
+}
+
+/* Input Fields */
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #bbb;
+}
+
+/* Textarea */
+textarea {
+  resize: none;
+  height: 100px;
+}
+
+/* Submit Button */
+button {
+  background-color: #00d084;
+  border: none;
+  padding: 10px 15px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #00b374;
+}
+
+/* Response Message */
+#response {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Dynamic Styles for Smaller Screens */
+@media (max-width: 768px) {
+  form {
+    padding: 15px 20px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  button {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+}
+
+</style>
+<body>
+  <h1>Help SMS</h1>
+  <form id="smsForm">
+    <label for="phone">Phone Number:</label><br>
+    <input type="text" id="phone" name="phone" placeholder="Enter the Number..." required><br><br>
+
+    <label for="message">Message:</label><br>
+    <textarea id="message" name="message" placeholder="Type your message here..." required></textarea><br><br>
+
+    <button type="submit">Send SMS</button>
+  </form>
+
+  <p id="response"></p>
+
+  <script>
+    document.getElementById('smsForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const phone = document.getElementById('phone').value;
+      const message = document.getElementById('message').value;
+
+      fetch('http://localhost:3000/send-sms', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ toPhoneNumber: phone, messageBody: message })
+})
+
+
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            document.getElementById('response').innerText = `SMS sent! SID: ${data.sid}`;
+          } else {
+            document.getElementById('response').innerText = `Error: ${data.message}`;
+          }
+        })
+        .catch(error => {
+          document.getElementById('response').innerText = `Error: ${error.message}`;
+        });
+    });
+  </script>
+</body>
+</html>

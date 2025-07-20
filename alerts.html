@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emergency Contacts</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f4f4f9;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    select, .info-box {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+
+    .info-box {
+      background-color: #eef;
+      min-height: 100px;
+    }
+
+    .safety-tips {
+      margin-top: 20px;
+      padding: 15px;
+      background: #ffebcc;
+      border-left: 5px solid #ff9800;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Emergency Contacts</h1>
+    <label for="region">Select Region:</label>
+    <select id="region" onchange="updateContacts()">
+      <option value="">-- Select Region --</option>
+      <optgroup label="India">
+        <option value="tamilnadu">Tamil Nadu</option>
+        <option value="kerala">Kerala</option>
+        <option value="bengaluru">Bengaluru</option>
+        <option value="delhi">Delhi</option>
+        <option value="maharashtra">Maharashtra</option>
+      </optgroup>
+      <optgroup label="International">
+        <option value="bangladesh">Bangladesh</option>
+        <option value="usa">United States</option>
+        <option value="uk">United Kingdom</option>
+        <option value="canada">Canada</option>
+        <option value="australia">Australia</option>
+      </optgroup>
+    </select>
+
+    <div class="info-box" id="contactInfo">
+      <p>Select a region to view emergency contacts.</p>
+    </div>
+
+    <div class="safety-tips">
+      <h3>Safety Tips for Women & Children</h3>
+      <ul>
+        <li>Avoid walking alone at night in deserted areas.</li>
+        <li>Always share your live location with a trusted contact.</li>
+        <li>Keep emergency contacts saved on speed dial.</li>
+        <li>Be aware of your surroundings and trust your instincts.</li>
+        <li>Use personal safety devices like pepper spray.</li>
+        <li>Learn basic self-defense techniques for emergencies.</li>
+        <li>Teach children emergency contact numbers.</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    const emergencyContacts = {
+      tamilnadu: { fire: "101", police: "100", ambulance: "108", child_safety: "1098", info: "Tamil Nadu emergency contacts." },
+      kerala: { fire: "101", police: "100", ambulance: "108", child_safety: "1098", info: "Kerala emergency contacts." },
+      bengaluru: { fire: "101", police: "100", ambulance: "108", child_safety: "1098", info: "Bengaluru emergency contacts." },
+      delhi: { fire: "101", police: "100", ambulance: "102", child_safety: "1098", info: "Delhi emergency contacts." },
+      maharashtra: { fire: "101", police: "100", ambulance: "108", child_safety: "1098", info: "Maharashtra emergency contacts." },
+      bangladesh: { fire: "199", police: "999", ambulance: "199", child_safety: "1098", info: "Bangladesh emergency contacts." },
+      usa: { fire: "911", police: "911", ambulance: "911", child_safety: "1-800-422-4453", info: "United States emergency contacts." },
+      uk: { fire: "999", police: "999", ambulance: "999", child_safety: "0800 1111", info: "United Kingdom emergency contacts." },
+      canada: { fire: "911", police: "911", ambulance: "911", child_safety: "1-800-668-6868", info: "Canada emergency contacts." },
+      australia: { fire: "000", police: "000", ambulance: "000", child_safety: "1800 55 1800", info: "Australia emergency contacts." }
+    };
+
+    function updateContacts() {
+      const region = document.getElementById("region").value;
+      const contactInfoDiv = document.getElementById("contactInfo");
+
+      if (region && emergencyContacts[region]) {
+        const contacts = emergencyContacts[region];
+        contactInfoDiv.innerHTML = `
+          <h3>Emergency Contacts for ${region.charAt(0).toUpperCase() + region.slice(1)}</h3>
+          <p><strong>Fire Service:</strong> ${contacts.fire}</p>
+          <p><strong>Police:</strong> ${contacts.police}</p>
+          <p><strong>Ambulance:</strong> ${contacts.ambulance}</p>
+          <p><strong>Child Safety Helpline:</strong> ${contacts.child_safety}</p>
+          <p><em>${contacts.info}</em></p>
+        `;
+      } else {
+        contactInfoDiv.innerHTML = "<p>Select a region to view emergency contacts.</p>";
+      }
+    }
+  </script>
+</body>
+</html>

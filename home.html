@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Women Safety App</title>
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="training.html">Training Videos</a></li>
+            <li><a href="shopping.html">Shopping</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="security.html">Security</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Welcome <span id="username"></span></h1>
+        <nav>
+            <ul>
+                <li><a href="#emergency">Emergency Help</a></li>
+                <li><a href="sms.html">Message Box</a></li>
+                <li><a href="contacts.html">Trusted Contacts</a></li>
+                <li><a href="alerts.html">Safety Alerts</a></li>
+                <li><a id="logout" href="login.html">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="emergency">
+        <h2>Emergency Help</h2>
+        <p>In case of danger, tap the button below to play an emergency alert sound.</p>
+        <button id="playAlarm">Play Alarm Sound</button>
+        
+        <!-- Alarm sound -->
+        <audio id="alarmSound" src="C:\Users\jaya2\Downloads\alarm.mp3"></audio> 
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Women Safety App</p>
+    </footer>
+
+    <script>
+        // Play alarm sound functionality
+        document.getElementById('playAlarm').addEventListener('click', function() {
+            const alarmSound = document.getElementById('alarmSound');
+            alarmSound.play();
+        });
+
+        const username = localStorage.getItem('loggedInUser');
+        document.getElementById('username').textContent = username ? username : 'jaya';
+    </script>
+</body>
+</html>

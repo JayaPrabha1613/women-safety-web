@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="relog.css">
+</head>
+<body>
+    <div class="form-container">
+        <!-- Registration Form -->
+        <div class="form-box">
+            <h2>Registration Form</h2>
+            <form action="/post "method="post">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required><br>
+
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" required><br>
+
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" required><br>
+
+                <label for="phoneCount">Number of Phone Numbers:</label>
+                <input type="number" id="phoneCount" name="phoneCount" required><br>
+
+                <div id="phoneFields"></div>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required><br>
+
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required><br>
+
+                <button type="button" onclick="generatePhoneFields()">Generate Phone Fields</button><br>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get form values
+            const name = document.getElementById('name').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Basic validation
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+
+            // Store the user data in localStorage (this is temporary, not secure for production)
+            localStorage.setItem('registeredName', name);
+            localStorage.setItem('registeredPassword', password);
+
+            alert("Registration successful!");
+
+            // Redirect to login page after registration
+            window.location.href = 'login.html';
+        });
+// script.js
+
+// Function to dynamically generate phone fields
+function generatePhoneFields() {
+    const phoneCount = document.getElementById('phoneCount').value;
+    const phoneFieldsContainer = document.getElementById('phoneFields');
+    phoneFieldsContainer.innerHTML = ''; // Clear previous fields
+
+    for (let i = 0; i < phoneCount; i++) {
+        const label = document.createElement('label');
+        label.setAttribute('for', `phone${i}`);
+        label.textContent = `Trusted Phone ${i + 1}:`;
+
+        const input = document.createElement('input');
+        input.setAttribute('type', 'tel');
+        input.setAttribute('id', `phone${i}`);
+        input.setAttribute('name', `phone${i}`);
+        input.setAttribute('required', true);
+
+        phoneFieldsContainer.appendChild(label);
+        phoneFieldsContainer.appendChild(input);
+        phoneFieldsContainer.appendChild(document.createElement('br'));
+    }
+}
+
+// Handling form submission
+document.getElementById('registrationForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+
+    const formData = new FormData(e.target);
+    const phoneNumbers = [];
+
+    // Collect all phone numbers from dynamically generated fields
+    for (let i = 0; i < formData.get('phoneCount'); i++) {
+        phoneNumbers.push(formData.get(`phone${i}`));
+    }
+
+    const registrationData = {
+        name: formData.get('name'),
+        dob: formData.get('dob'),
+        age: formData.get('age'),
+        email: formData.get('email'),
+        password: formData.get('password'),
+        confirmPassword: formData.get('confirmPassword'),
+        phoneNumbers: phoneNumbers // Store trusted contacts
+    };
+
+    // Here you can send the registrationData to your backend (using fetch or AJAX)
+    console.log(registrationData);
+
+    // Example: Sending registrationData to the backend
+    fetch('/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(registrationData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Registration successful');
+            // Redirect to login page or automatically log in
+        } else {
+            alert('Registration failed: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+    </script>
+</body>
+</html>
